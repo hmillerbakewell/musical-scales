@@ -1,0 +1,10 @@
+{
+    "python.pythonPath": "/mnt/c/Users/hmill/github/work/QCAs-miranda/venv/bin/python",
+    "cSpell.words": [
+        "pylint",
+        "pytest"
+    ],
+    "python.linting.pylintEnabled": false,
+    "python.linting.pydocstyleEnabled": true,
+    "python.linting.enabled": true
+}
