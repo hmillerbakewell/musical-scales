@@ -11,3 +11,9 @@ def test_middle_c():
     assert d_3.name == "D"
     b_2 = c_3 -1
     assert b_2.name == "B"
+
+def test_equality():
+    """Notes should compare permissively."""
+    assert musical_scales.Note("C") == musical_scales.Note("C")
+    assert musical_scales.Note("C") == "C3"
+    assert musical_scales.Note("C") == "C"

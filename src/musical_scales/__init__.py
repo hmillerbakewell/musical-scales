@@ -68,6 +68,13 @@ class Note:
         """Shifting this note's degree downwards."""
         return self + (-shift)
 
+    def __eq__(self, other):
+        """Check equality via .midi."""
+        if isinstance(other, Note):
+            return self.midi == other.midi
+        else:
+            return self.midi == other or self.name == other
+
 
 def scale(starting_note, mode="ionian"):
     """Return a sequence of Notes starting on the given note in the given mode.
