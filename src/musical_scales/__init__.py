@@ -146,6 +146,8 @@ scale_intervals = {
     "yo": [3, 2, 2, 3, 2]
 }
 
+scale_intervals["major"] = scale_intervals["ionian"]
+
 names_from_interval = {
     0: "C",
     1: "C#",

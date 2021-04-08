@@ -15,3 +15,7 @@ def test_blues():
     scale_notes = musical_scales.scale("C","blues")
     names = list(map(lambda note: note.name, scale_notes))
     assert names == ["C", "D#", "F", "F#", "G", "A#", "C"]
+
+def test_major():
+    """'major' is a shorthand for ionian in our code."""
+    assert musical_scales.scale("D") == musical_scales.scale("D","major")
