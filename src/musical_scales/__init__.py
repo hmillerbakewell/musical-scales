@@ -76,7 +76,7 @@ class Note:
             return self.midi == other or self.name == other
 
 
-def scale(starting_note, mode="ionian"):
+def scale(starting_note, mode="ionian", octaves=1):
     """Return a sequence of Notes starting on the given note in the given mode.
 
     Example:
@@ -88,8 +88,9 @@ def scale(starting_note, mode="ionian"):
     if not isinstance(starting_note, Note):
         starting_note = Note(starting_note)
     notes = [starting_note]
-    for interval in scale_intervals[mode]:
-        notes.append(notes[-1] + interval)
+    for octave in range(0,octaves):
+        for interval in scale_intervals[mode]:
+            notes.append(notes[-1] + interval)
     return notes
 
 
