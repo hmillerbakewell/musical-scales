@@ -12,9 +12,9 @@ class MusicException(Exception):
 class Note:
     """A single note in a given octave, e.g. C#3.
 
-    Measured as a number of semitones above Middle C;
-        Note(0) # Middle C, i.e. C3
-        Note(2) # D3
+    Measured as a number of semitones above Middle C:
+        * Note(0) # Middle C, i.e. C3
+        * Note(2) # D3
     """
 
     semitones_above_middle_c: int
@@ -25,8 +25,8 @@ class Note:
         """Create a note with a given name or degree.
 
         Examples:
-            Note("C#")
-            Note(semitones_above_middle_c = 1)
+            * Note("C#")
+            * Note(semitones_above_middle_c = 1)
         """
         if name is not None:
             if name not in interval_from_names:
@@ -79,8 +79,8 @@ def scale(starting_note, mode="ionian", octaves=1):
     """Return a sequence of Notes starting on the given note in the given mode.
 
     Example:
-        scale("C") # C major (ionian)
-        scale(Note(4), "harmonic minor") # E harmonic minor
+        * scale("C") # C major (ionian)
+        * scale(Note(4), "harmonic minor") # E harmonic minor
     """
     if mode not in scale_intervals:
         raise MusicException(f"The mode {mode} is not available.")
@@ -162,6 +162,7 @@ names_from_interval = {
     10: "A#",
     11: "B"
 }
+"""From an interval give the note name, favouring sharps over flats."""
 
 interval_from_names = {
     "C": 0,
@@ -186,8 +187,9 @@ interval_from_names = {
     "Cb": 11,
     "B#": 0
 }
+"""Dictionary from note names to number of semitones above C."""
 
-
+# MIT License
 
 """
 The MIT License (MIT)
