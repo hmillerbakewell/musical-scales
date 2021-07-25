@@ -77,3 +77,13 @@ musical_scales.scale("D")
 musical_scales.scale("F#", "blues")
 # [F#3, A3, B3, C4, C#4, E4, F#4]
 ````
+
+
+## Documentation, Licencing, and Acknowledgements
+
+Detailed documentation can be found at [readthedocs.io](https://musical-scales.readthedocs.io/en/latest/) as well as
+in the docstrings of the python files themselves.
+The source code is available under the MIT licence and can be found
+at on [Hector Miller-Bakewell's github](https://github.com/hmillerbakewell/musical-scales).
+This package was created as part of the [QuTune Project](https://iccmr-quantum.github.io/).
+
