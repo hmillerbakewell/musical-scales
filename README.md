@@ -60,8 +60,8 @@ Example notes:
  - `Note(2)` two semitones above middle C, which is the same as `Note("D")`.
 
 Notes have two fundamental properties:
- - `.name` e.g. "C"
- - `.octave` e.g. 3
+ - `.name` e.g. `"C"`
+ - `.octave` e.g. `3`
 
 You can retrieve both together MIDI style with:
  - `.midi` e.g. "F#4"
@@ -72,6 +72,7 @@ You can add an integer to a note to raise it by that many semitones:
 ## Examples
 ````py
 musical_scales.scale("D")
+# Defaults to major scale
 # [D3, E3, F#3, G3, A3, B3, C#4, D4]
 musical_scales.scale("F#", "blues")
 # [F#3, A3, B3, C4, C#4, E4, F#4]

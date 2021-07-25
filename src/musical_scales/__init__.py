@@ -1,6 +1,5 @@
 """Retrieve a scale based on a given mode and starting note."""
 
-import typing
 import math
 
 
@@ -88,7 +87,7 @@ def scale(starting_note, mode="ionian", octaves=1):
     if not isinstance(starting_note, Note):
         starting_note = Note(starting_note)
     notes = [starting_note]
-    for octave in range(0,octaves):
+    for octave in range(0, octaves):
         for interval in scale_intervals[mode]:
             notes.append(notes[-1] + interval)
     return notes
