@@ -77,7 +77,6 @@ musical_scales.scale("D")
 musical_scales.scale("F#", "blues")
 # [F#3, A3, B3, C4, C#4, E4, F#4]
 musical_scales.scale("D", starting_octave=5)
-# Defaults to major scale
 # [D5, E5, F#5, G5, A5, B5, C#6, D6]
 ````
 
