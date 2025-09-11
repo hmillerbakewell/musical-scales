@@ -62,7 +62,7 @@ class Note:
 
     def __add__(self, shift: int):
         """Shifting this note's degree upwards."""
-        return Note(semitones_above_middle_c=self.semitones_above_middle_c, starting_octave=self.starting_octave + shift)
+        return Note(semitones_above_middle_c=self.semitones_above_middle_c + shift, starting_octave=self.starting_octave)
 
     def __sub__(self, shift: int):
         """Shifting this note's degree downwards."""
