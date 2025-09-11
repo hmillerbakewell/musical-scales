@@ -13,9 +13,9 @@ def test_ionian():
     names = list(map(lambda note: note.midi, scale_notes))
     assert names == ["D3", "E3", "F#3", "G3", "A3", "B3", "C#4", "D4"]
 
-def test_octave():
+def test_starting_octave():
     """Check that C major with given octave is correct."""
-    scale_notes = musical_scales.scale("D", octave=5)
+    scale_notes = musical_scales.scale("D", starting_octave=5)
     names = list(map(lambda note: note.midi, scale_notes))
     assert names == ["C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6"]
 
