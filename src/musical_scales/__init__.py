@@ -76,7 +76,7 @@ class Note:
             return self.midi == other or self.name == other
 
 
-def scale(starting_note, starting_octave=3, mode="ionian", octaves=1):
+def scale(starting_note, mode="ionian", octaves=1, starting_octave=3):
     """Return a sequence of Notes starting on the given note in the given mode.
 
     Example:
