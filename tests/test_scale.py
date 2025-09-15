@@ -1,8 +1,9 @@
 """Test the creation of scales."""
 
-# import sys
-# sys.path.append('./src')
-# import musical_scales.musical_scales
+import sys
+from pathlib import Path
+sys.path.append('./src')
+
 import musical_scales
 import pytest
 
@@ -17,7 +18,7 @@ def test_starting_octave():
     """Check that C major with given octave is correct."""
     scale_notes = musical_scales.scale("D", starting_octave=5)
     names = list(map(lambda note: note.midi, scale_notes))
-    assert names == ["C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6"]
+    assert names == ["D5", "E5", "F#5", "G5", "A5", "B5", "C#6", "D6"]
 
 def test_octaves():
     """Check that D major is correct with 2 octaves."""
