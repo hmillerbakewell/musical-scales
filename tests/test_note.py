@@ -1,5 +1,9 @@
 """Test the creation of notes."""
 
+import sys
+from pathlib import Path
+sys.path.append('./src')
+
 import musical_scales
 import pytest
 
