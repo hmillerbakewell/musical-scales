@@ -76,10 +76,12 @@ import musical_scales
 D_major_3 = musical_scales.scale("D")
 # Defaults to major scale
 # [D3, E3, F#3, G3, A3, B3, C#4, D4]
-F_sharp_blues = musical_scales.scale("F#", "blues")
+F_sharp_blues_3 = musical_scales.scale("F#", "blues")
 # [F#3, A3, B3, C4, C#4, E4, F#4]
 D_major_5 = musical_scales.scale("D", starting_octave=5)
 # [D5, E5, F#5, G5, A5, B5, C#6, D6]
+F_sharp_blues_5 = musical_scales.scale("F#", "blues", starting_octave=5)
+# [F#5, A5, B5, C6, C#6, E6, F#6]
 ````
 
 
