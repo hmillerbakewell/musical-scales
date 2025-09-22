@@ -21,13 +21,14 @@ class Note:
     name: str
     octave: int
 
-    def __init__(self, name: str = None, semitones_above_middle_c: int = None):
+    def __init__(self, name: str = None, semitones_above_middle_c: int = None, starting_octave: int = 3):
         """Create a note with a given name or degree.
 
         Examples:
             * Note("C#")
             * Note(semitones_above_middle_c = 1)
         """
+        self.starting_octave = starting_octave
         if name is not None:
             if name not in interval_from_names:
                 raise MusicException(f"No note found with name {name}.")
@@ -44,7 +45,7 @@ class Note:
         """
         self.semitones_above_middle_c = semitones_above_middle_c
         self.name = names_from_interval[semitones_above_middle_c % 12]
-        self.octave = math.floor(semitones_above_middle_c / 12) + 3
+        self.octave = math.floor(semitones_above_middle_c / 12) + self.starting_octave
 
     def __str__(self):
         """MIDI-style string representation e.g. C#3."""
@@ -61,7 +62,7 @@ class Note:
 
     def __add__(self, shift: int):
         """Shifting this note's degree upwards."""
-        return Note(semitones_above_middle_c=self.semitones_above_middle_c + shift)
+        return Note(semitones_above_middle_c=self.semitones_above_middle_c + shift, starting_octave=self.starting_octave)
 
     def __sub__(self, shift: int):
         """Shifting this note's degree downwards."""
@@ -75,7 +76,7 @@ class Note:
             return self.midi == other or self.name == other
 
 
-def scale(starting_note, mode="ionian", octaves=1):
+def scale(starting_note, mode="ionian", octaves=1, starting_octave=3):
     """Return a sequence of Notes starting on the given note in the given mode.
 
     Example:
@@ -85,7 +86,7 @@ def scale(starting_note, mode="ionian", octaves=1):
     if mode not in scale_intervals:
         raise MusicException(f"The mode {mode} is not available.")
     if not isinstance(starting_note, Note):
-        starting_note = Note(starting_note)
+        starting_note = Note(starting_note, starting_octave=starting_octave)
     notes = [starting_note]
     for octave in range(0, octaves):
         for interval in scale_intervals[mode]:
