@@ -59,7 +59,7 @@ class Note:
         if isinstance(name_or_interval, str):
             name, octave = parse_compound_note_name(name_or_interval)
             self.semitones_above_middle_c = interval_from_names[name] + (
-                octave * 12)
+                (octave - 3) * 12)
         elif isinstance(name_or_interval, int):
             self.semitones_above_middle_c = name_or_interval
         else:
