@@ -36,6 +36,9 @@ def parse_compound_note_name(name: str):
         octave = int(octave)
     return name, octave
 
+def emojify_accidentals(name: str) -> str:
+    """Convert # and b in a note name to their emoji equivalents."""
+    return name.replace("#", "♯").replace("b", "♭")
 
 class Note:
     """A single note in a given octave, e.g. C#3.
