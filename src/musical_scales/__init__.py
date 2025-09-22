@@ -10,7 +10,7 @@ class MusicException(Exception):
     pass
 
 
-PATTERN = re.compile(r"^([A-Ga-g])([#b]?)(\d*)$")
+PATTERN = re.compile(r"^([A-Ga-g])([#b]?)(-?\d*)$")
 
 
 def parse_compound_note_name(name: str):
@@ -25,11 +25,11 @@ def parse_compound_note_name(name: str):
     name = name.replace("♯", "#").replace("♭", "b")
     match = PATTERN.match(name)
     if not match:
-        raise MusicException(f"The note name {name} is not valid.")
+        raise MusicException(f"The note name {name} is not valid. Expected forms are like 'C#' or 'C#4'.")
     name = match.group(1) + match.group(2)
     octave = match.group(3)
     if name not in interval_from_names:
-        raise MusicException(f"No note found with name {name}.")
+        raise MusicException(f"No note found with name {name}. Expected A-G with optional # or b.")
     if octave == "":
         octave = 3
     else:
