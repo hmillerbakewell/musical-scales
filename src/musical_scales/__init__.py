@@ -75,7 +75,9 @@ class Note:
 
     @property
     def name(self):
-        """Get the name of the note."""
+        """Name of the note, e.g. C#. Favours sharps.
+
+        Favours sharps for consistenct, see `enharmonic` for flats."""
         return names_from_interval_favour_sharps[self.semitones_above_middle_c % 12]
 
     @property
@@ -84,9 +86,17 @@ class Note:
         return self.semitones_above_middle_c // 12 + 3
 
     @property
-    def midi(self):
-        """Note name and octave, e.g. C3."""
+    def midi(self) -> str:
+        """Note name and octave, sutiable for MIDI software, e.g. C3.
+
+        Favours sharps.
+        """
         return f"{self.name}{self.octave}"
+
+    @property
+    def enharmonic(self) -> str:
+        """Note name and octave, but favouring flats e.g. Bb."""
+        return names_from_interval_favour_flats[self.semitones_above_middle_c % 12]
 
     def __add__(self, shift: int):
         """Shifting this note's degree upwards."""
@@ -97,11 +107,11 @@ class Note:
         return self + (-shift)
 
     def __eq__(self, other):
-        """Check equality via .midi."""
+        """Check equality via interval, or by midi representation."""
         if isinstance(other, Note):
-            return self.midi == other.midi
+            return self.semitones_above_middle_c == other.semitones_above_middle_c
         else:
-            return self.midi == other or self.name == other
+            return str(self) == str(other)
 
 
 def scale(starting_note, mode="ionian", octaves=1, starting_octave=3):
@@ -177,7 +187,7 @@ scale_intervals = {
 
 scale_intervals["major"] = scale_intervals["ionian"]
 
-names_from_interval = {
+names_from_interval_favour_sharps = {
     0: "C",
     1: "C#",
     2: "D",
@@ -192,6 +202,24 @@ names_from_interval = {
     11: "B"
 }
 """From an interval give the note name, favouring sharps over flats."""
+
+
+names_from_interval_favour_flats = {
+    0: "C",
+    1: "Db",
+    2: "D",
+    3: "Eb",
+    4: "E",
+    5: "F",
+    6: "Gb",
+    7: "G",
+    8: "Ab",
+    9: "A",
+    10: "Bb",
+    11: "B"
+}
+"""From an interval give the note name, favouring sharps over flats."""
+
 
 interval_from_names = {
     "C": 0,
