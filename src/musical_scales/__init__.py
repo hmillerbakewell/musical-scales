@@ -1,6 +1,7 @@
 """Retrieve a scale based on a given mode and starting note."""
 
 import math
+import re
 
 
 class MusicException(Exception):
@@ -9,43 +10,63 @@ class MusicException(Exception):
     pass
 
 
+PATTERN = re.compile(r"^([A-Ga-g])([#b]?)(-?\d*)$")
+
+
+def parse_compound_note_name(name: str):
+    """Parse a compound note name e.g. C#4 into its components.
+
+    Returns:
+        (str, int): The note name and octave.
+    """
+
+    name = name.strip()
+    name = name[0].upper() + name[1:]
+    name = name.replace("♯", "#").replace("♭", "b")
+    match = PATTERN.match(name)
+    if not match:
+        raise MusicException(f"The note name {name} is not valid. Expected forms are like 'C#' or 'C#4'.")
+    name = match.group(1) + match.group(2)
+    octave = match.group(3)
+    if name not in interval_from_names:
+        raise MusicException(f"No note found with name {name}. Expected A-G with optional # or b.")
+    if octave == "":
+        octave = 3
+    else:
+        octave = int(octave)
+    return name, octave
+
+def emojify_accidentals(name: str) -> str:
+    """Convert # and b in a note name to their emoji equivalents."""
+    return name.replace("#", "♯").replace("b", "♭")
+
 class Note:
     """A single note in a given octave, e.g. C#3.
 
     Measured as a number of semitones above Middle C:
         * Note(0) # Middle C, i.e. C3
         * Note(2) # D3
+
+    semitones_above_middle_c is the single source of truth.
     """
 
     semitones_above_middle_c: int
-    name: str
-    octave: int
 
-    def __init__(self, name: str = None, semitones_above_middle_c: int = None, starting_octave: int = 3):
+    def __init__(self, name_or_interval: str | int):
         """Create a note with a given name or degree.
 
         Examples:
             * Note("C#")
             * Note(semitones_above_middle_c = 1)
         """
-        self.starting_octave = starting_octave
-        if name is not None:
-            if name not in interval_from_names:
-                raise MusicException(f"No note found with name {name}.")
-            self._set_degree(interval_from_names[name])
-        elif semitones_above_middle_c is not None:
-            self._set_degree(semitones_above_middle_c)
+        if isinstance(name_or_interval, str):
+            name, octave = parse_compound_note_name(name_or_interval)
+            self.semitones_above_middle_c = interval_from_names[name] + (
+                (octave - 3) * 12)
+        elif isinstance(name_or_interval, int):
+            self.semitones_above_middle_c = name_or_interval
         else:
-            self._set_degree(0)
-
-    def _set_degree(self, semitones_above_middle_c: int):
-        """Set the note name and octave.
-
-        Should only be used during initialisation.
-        """
-        self.semitones_above_middle_c = semitones_above_middle_c
-        self.name = names_from_interval[semitones_above_middle_c % 12]
-        self.octave = math.floor(semitones_above_middle_c / 12) + self.starting_octave
+            self.semitones_above_middle_c = 0
 
     def __str__(self):
         """MIDI-style string representation e.g. C#3."""
@@ -56,39 +77,58 @@ class Note:
         return self.midi
 
     @property
-    def midi(self):
-        """Note name and octave, e.g. C3."""
+    def name(self):
+        """Name of the note, e.g. C#. Favours sharps.
+
+        Favours sharps for consistenct, see `enharmonic` for flats."""
+        return names_from_interval_favour_sharps[self.semitones_above_middle_c % 12]
+
+    @property
+    def octave(self):
+        """Get the octave of the note."""
+        return self.semitones_above_middle_c // 12 + 3
+
+    @property
+    def midi(self) -> str:
+        """Note name and octave, sutiable for MIDI software, e.g. C3.
+
+        Favours sharps.
+        """
         return f"{self.name}{self.octave}"
+
+    @property
+    def enharmonic(self) -> str:
+        """Note name and octave, but favouring flats e.g. Bb."""
+        return names_from_interval_favour_flats[self.semitones_above_middle_c % 12]
 
     def __add__(self, shift: int):
         """Shifting this note's degree upwards."""
-        return Note(semitones_above_middle_c=self.semitones_above_middle_c + shift, starting_octave=self.starting_octave)
+        return Note(name_or_interval=self.semitones_above_middle_c + shift)
 
     def __sub__(self, shift: int):
         """Shifting this note's degree downwards."""
         return self + (-shift)
 
     def __eq__(self, other):
-        """Check equality via .midi."""
+        """Check equality via interval, or by midi representation."""
         if isinstance(other, Note):
-            return self.midi == other.midi
+            return self.semitones_above_middle_c == other.semitones_above_middle_c
         else:
-            return self.midi == other or self.name == other
+            return str(self) == str(other)
 
-
-def scale(starting_note, mode="ionian", octaves=1, starting_octave=3):
+def scale(starting_note: Note | str | int, mode="ionian", *, octaves=1):
     """Return a sequence of Notes starting on the given note in the given mode.
 
     Example:
-        * scale("C") # C major (ionian)
+        * scale("C3") # C major (ionian) starting on middle C
         * scale(Note(4), "harmonic minor") # E harmonic minor
     """
     if mode not in scale_intervals:
         raise MusicException(f"The mode {mode} is not available.")
     if not isinstance(starting_note, Note):
-        starting_note = Note(starting_note, starting_octave=starting_octave)
+        starting_note = Note(starting_note)
     notes = [starting_note]
-    for octave in range(0, octaves):
+    for _ in range(0, octaves):
         for interval in scale_intervals[mode]:
             notes.append(notes[-1] + interval)
     return notes
@@ -149,7 +189,7 @@ scale_intervals = {
 
 scale_intervals["major"] = scale_intervals["ionian"]
 
-names_from_interval = {
+names_from_interval_favour_sharps = {
     0: "C",
     1: "C#",
     2: "D",
@@ -164,6 +204,24 @@ names_from_interval = {
     11: "B"
 }
 """From an interval give the note name, favouring sharps over flats."""
+
+
+names_from_interval_favour_flats = {
+    0: "C",
+    1: "Db",
+    2: "D",
+    3: "Eb",
+    4: "E",
+    5: "F",
+    6: "Gb",
+    7: "G",
+    8: "Ab",
+    9: "A",
+    10: "Bb",
+    11: "B"
+}
+"""From an interval give the note name, favouring sharps over flats."""
+
 
 interval_from_names = {
     "C": 0,
