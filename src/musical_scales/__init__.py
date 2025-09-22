@@ -113,20 +113,19 @@ class Note:
         else:
             return str(self) == str(other)
 
-
-def scale(starting_note, mode="ionian", octaves=1, starting_octave=3):
+def scale(starting_note: Note | str | int, mode="ionian", *, octaves=1):
     """Return a sequence of Notes starting on the given note in the given mode.
 
     Example:
-        * scale("C") # C major (ionian)
+        * scale("C3") # C major (ionian) starting on middle C
         * scale(Note(4), "harmonic minor") # E harmonic minor
     """
     if mode not in scale_intervals:
         raise MusicException(f"The mode {mode} is not available.")
     if not isinstance(starting_note, Note):
-        starting_note = Note(starting_note, starting_octave=starting_octave)
+        starting_note = Note(starting_note)
     notes = [starting_note]
-    for octave in range(0, octaves):
+    for _ in range(0, octaves):
         for interval in scale_intervals[mode]:
             notes.append(notes[-1] + interval)
     return notes
