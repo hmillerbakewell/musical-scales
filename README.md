@@ -4,70 +4,74 @@ Retrieve a scale based on a given mode and starting note.
 Information about these scales can be found [on Wikipedia](https://en.wikipedia.org/wiki/List_of_musical_scales_and_modes).
 
 Currently supported scales:
- - acoustic
- - aeolian
- - algerian
- - super locrian
- - augmented
- - bebop dominant
- - blues
- - chromatic
- - dorian
- - double harmonic
- - enigmatic
- - flamenco
- - romani
- - half-diminished
- - harmonic major
- - harmonic minor
- - hijaroshi
- - hungarian minor
- - hungarian major
- - in
- - insen
- - ionian
- - iwato
- - locrian
- - lydian augmented
- - lydian
- - locrian major
- - pentatonic major
- - melodic minor ascending
- - melodic minor descending
- - pentatonic minor
- - mixolydian
- - neapolitan major
- - neapolitan minor
- - octatonic c-d
- - octatonic c-c#
- - persian
- - phrygian dominant
- - phrygian
- - prometheus
- - harmonics
- - tritone
- - two-semitone tritone
- - ukranian dorian
- - whole-tone scale
- - yo
+
+- acoustic
+- aeolian
+- algerian
+- super locrian
+- augmented
+- bebop dominant
+- blues
+- chromatic
+- dorian
+- double harmonic
+- enigmatic
+- flamenco
+- romani
+- half-diminished
+- harmonic major
+- harmonic minor
+- hijaroshi
+- hungarian minor
+- hungarian major
+- in
+- insen
+- ionian
+- iwato
+- locrian
+- lydian augmented
+- lydian
+- locrian major
+- pentatonic major
+- melodic minor ascending
+- melodic minor descending
+- pentatonic minor
+- mixolydian
+- neapolitan major
+- neapolitan minor
+- octatonic c-d
+- octatonic c-c#
+- persian
+- phrygian dominant
+- phrygian
+- prometheus
+- harmonics
+- tritone
+- two-semitone tritone
+- ukranian dorian
+- whole-tone scale
+- yo
+
+## Dependencies
+
+This is Version 2 of the package, which requires Python 3.10 or later (released in 2021). Version 1 supported Python 3.8, and can still be found on PyPI.
 
 ## The Note class
 
 Notes can be specified with either a name or a given number of semitones above middle C (C3).
 Octaves are done MIDI-style, so B2 is immediately followed by C3.
+
 Example notes:
- - `Note("D")` the first D above middle C
- - `Note(2)` two semitones above middle C, which is the same as `Note("D")`.
 
-Notes have two fundamental properties:
- - `.name` e.g. `"C"`
- - `.octave` e.g. `3`
+- `Note("D")` the first D above middle C
+- `Note(2)` two semitones above middle C, which is the same as `Note("D")`.
 
-You can retrieve both together MIDI style with:
- - `.midi` e.g. "F#4"
+Notes have properties inferred from their interval from C.
 
-You can add an integer to a note to raise it by that many semitones:
- - `Note("C") + 12` the first C above middle C
+- `.name` e.g. "D#" (favours sharps)
+- `.enharmonic` e.g. "Eb" (favours flats)
+- `.octave` e.g. 3
+- `.midi` e.g. "F#4" (MIDI representation)
 
 ## Examples
 ````python
