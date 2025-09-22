@@ -73,15 +73,38 @@ You can add an integer to a note to raise it by that many semitones:
 ````python
 import musical_scales
 
-D_major_3 = musical_scales.scale("D")
-# Defaults to major scale
+# Notes
+
+# Middle C. If no octave name is provided then defaults to octave 3.
+C3 = musical_scales.Note("C")
+musical_scales.Note("C3")
+
+# Or specify by interval above/below Middle C
+C3 = musical_scales.Note(0)
+C4 = musical_scales.Note(12)
+
+D_sharp = musical_scales.Note(3)
+
+# You can add / subtract integers from notes to shift them
+assert C3 = D_sharp - 3
+
+# Scales
+
+# Defaults to a major scale
+musical_scales.scale("D")
 # [D3, E3, F#3, G3, A3, B3, C#4, D4]
-F_sharp_blues_3 = musical_scales.scale("F#", "blues")
+
+# Or specify a name from musical_scales.scale_intervals.keys()
+musical_scales.scale("F#", "blues")
 # [F#3, A3, B3, C4, C#4, E4, F#4]
-D_major_5 = musical_scales.scale("D", starting_octave=5)
+
+# Specify a starting octave for the note (defaults to 3)
+musical_scales.scale("D5")
 # [D5, E5, F#5, G5, A5, B5, C#6, D6]
-F_sharp_blues_5 = musical_scales.scale("F#", "blues", starting_octave=5)
-# [F#5, A5, B5, C6, C#6, E6, F#6]
+
+# Specify how many octaves to output (keyword required)
+musical_scales.scale("F#", "blues", octaves=2)
+# [F#3, A3, B3, C4, C#4, E4, F#4, A4, B4, C5, C#5, E5, F#5]
 ````
 
 

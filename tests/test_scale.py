@@ -1,7 +1,6 @@
 """Test the creation of scales."""
 
 import sys
-from pathlib import Path
 sys.path.append('./src')
 
 import musical_scales
@@ -16,7 +15,7 @@ def test_ionian():
 
 def test_starting_octave():
     """Check that C major with given octave is correct."""
-    scale_notes = musical_scales.scale("D", starting_octave=5)
+    scale_notes = musical_scales.scale("D5")
     names = list(map(lambda note: note.midi, scale_notes))
     assert names == ["D5", "E5", "F#5", "G5", "A5", "B5", "C#6", "D6"]
 
